@@ -17,7 +17,7 @@ neogit.setup {
   },
 }
 
-vim.keymap.set('n', 'gg', neogit.open, { desc = '[G]it status (Neogit)' })
-vim.keymap.set('n', 'gd', 'DiffviewOpen', { desc = '[G]it [D]iffview open' })
-vim.keymap.set('n', 'gc', 'DiffviewClose', { desc = '[G]it Diffview [C]lose' })
-vim.keymap.set('n', 'gh', 'DiffviewFileHistory %', { desc = '[G]it file [H]istory' })
+vim.keymap.set('n', '<leader>gg', neogit.open, { desc = 'Open Neogit UI' })
+vim.keymap.set('n', 'gd', diffview.open, { desc = '[G]it [D]iffview open' })
+vim.keymap.set('n', 'gc', diffview.close, { desc = '[G]it Diffview [C]lose' })
+vim.keymap.set('n', 'gh', diffview.file_history, { desc = '[G]it file [H]istory' })
