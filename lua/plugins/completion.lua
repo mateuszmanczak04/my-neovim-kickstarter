@@ -4,7 +4,8 @@ require('luasnip').setup {}
 vim.pack.add { { src = 'https://github.com/saghen/blink.cmp', version = vim.version.range '1.*' } }
 require('blink.cmp').setup {
   keymap = {
-    preset = 'default',
+    -- 'enter' binds <CR> to accept (the 'default' preset leaves <CR> unbound).
+    preset = 'enter',
   },
 
   appearance = {
@@ -13,6 +14,9 @@ require('blink.cmp').setup {
 
   completion = {
     documentation = { auto_show = false, auto_show_delay_ms = 500 },
+    -- Nothing pre-selected, so <CR> only accepts once you've picked an item
+    -- with <C-n>/<C-p>; otherwise it's a normal newline.
+    list = { selection = { preselect = false } },
   },
 
   sources = {

@@ -62,7 +62,5 @@ gitsigns.setup {
         gitsigns.nav_hunk 'prev'
       end
     end, { desc = 'Jump to previous git [c]hange', buf = bufnr })
-
-    vim.keymap.set('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = '[T]oggle git show [b]lame line', buf = bufnr })
   end,
 }
