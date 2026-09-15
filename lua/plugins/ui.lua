@@ -1,73 +1,13 @@
-local gh = require('config.utils').gh
-
-vim.pack.add { gh 'NMAC427/guess-indent.nvim' }
+vim.pack.add { 'https://github.com/NMAC427/guess-indent.nvim' }
 require('guess-indent').setup {}
 
-vim.pack.add { gh 'lewis6991/gitsigns.nvim' }
-local gitsigns = require 'gitsigns'
-gitsigns.setup {
-  signs = {
-    add = { text = '+' },
-    change = { text = '~' },
-    delete = { text = '_' },
-    topdelete = { text = '‾' },
-    changedelete = { text = '~' },
-    untracked = { text = '┆' },
-  },
-  signs_staged = {
-    add = { text = '+' },
-    change = { text = '~' },
-    delete = { text = '_' },
-    topdelete = { text = '‾' },
-    changedelete = { text = '~' },
-    untracked = { text = '┆' },
-  },
-  signs_staged_enable = true,
-  signcolumn = true,
-  on_attach = function(bufnr)
-    vim.keymap.set('n', ']c', function()
-      if vim.wo.diff then
-        vim.cmd.normal { ']c', bang = true }
-      else
-        gitsigns.nav_hunk 'next'
-      end
-    end, { desc = 'Jump to next git [c]hange', buf = bufnr })
-
-    vim.keymap.set('n', '[c', function()
-      if vim.wo.diff then
-        vim.cmd.normal { '[c', bang = true }
-      else
-        gitsigns.nav_hunk 'prev'
-      end
-    end, { desc = 'Jump to previous git [c]hange', buf = bufnr })
-
-    vim.keymap.set('v', '<leader>hs', function() gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' } end, { desc = 'git [s]tage hunk', buf = bufnr })
-    vim.keymap.set('v', '<leader>hr', function() gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' } end, { desc = 'git [r]eset hunk', buf = bufnr })
-
-    vim.keymap.set('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'git [s]tage hunk', buf = bufnr })
-    vim.keymap.set('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'git [r]eset hunk', buf = bufnr })
-    vim.keymap.set('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'git [S]tage buffer', buf = bufnr })
-    vim.keymap.set('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer', buf = bufnr })
-    vim.keymap.set('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk', buf = bufnr })
-    vim.keymap.set('n', '<leader>hi', gitsigns.preview_hunk_inline, { desc = 'git preview hunk [i]nline', buf = bufnr })
-    vim.keymap.set('n', '<leader>hb', function() gitsigns.blame_line { full = true } end, { desc = 'git [b]lame line', buf = bufnr })
-    vim.keymap.set('n', '<leader>hd', gitsigns.diffthis, { desc = 'git [d]iff against index', buf = bufnr })
-    vim.keymap.set('n', '<leader>hD', function() gitsigns.diffthis '~' end, { desc = 'git [D]iff against last commit', buf = bufnr })
-    vim.keymap.set('n', '<leader>hQ', function() gitsigns.setqflist 'all' end, { desc = 'git hunk [Q]uickfix list (all files in repo)', buf = bufnr })
-    vim.keymap.set('n', '<leader>hq', gitsigns.setqflist, { desc = 'git hunk [q]uickfix list (all changes in this file)', buf = bufnr })
-
-    vim.keymap.set('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = '[T]oggle git show [b]lame line', buf = bufnr })
-    vim.keymap.set('n', '<leader>tw', gitsigns.toggle_word_diff, { desc = '[T]oggle git intra-line [w]ord diff', buf = bufnr })
-
-    vim.keymap.set({ 'o', 'x' }, 'ih', gitsigns.select_hunk, { desc = 'text object [i]nside [h]unk', buf = bufnr })
-  end,
+vim.pack.add { 'https://github.com/rcarriga/nvim-notify' }
+---@diagnostic disable-next-line: missing-fields
+require('notify').setup {
+  merge_duplicates = true,
 }
 
--- TODO: try diffview in the future. For now stay with SourceTree app
--- vim.pack.add { gh 'sindrets/diffview.nvim'}
--- require('diffview').setup({})
-
-vim.pack.add { gh 'folke/which-key.nvim' }
+vim.pack.add { 'https://github.com/folke/which-key.nvim' }
 require('which-key').setup {
 
   delay = 0,
@@ -76,12 +16,12 @@ require('which-key').setup {
   spec = {
     { '<leader>s', group = '[S]earch', mode = { 'n', 'v' } },
     { '<leader>t', group = '[T]oggle' },
-    { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+    { '<leader>g', group = '[G]it' },
     { 'gr', group = 'LSP Actions', mode = { 'n' } },
   },
 }
 
-vim.pack.add { gh 'folke/tokyonight.nvim' }
+vim.pack.add { 'https://github.com/folke/tokyonight.nvim' }
 ---@diagnostic disable-next-line: missing-fields
 require('tokyonight').setup {
   styles = {
@@ -91,10 +31,10 @@ require('tokyonight').setup {
 
 vim.cmd.colorscheme 'tokyonight-night'
 
-vim.pack.add { gh 'folke/todo-comments.nvim' }
+vim.pack.add { 'https://github.com/folke/todo-comments.nvim' }
 require('todo-comments').setup { signs = false }
 
-vim.pack.add { gh 'nvim-mini/mini.nvim' }
+vim.pack.add { 'https://github.com/nvim-mini/mini.nvim' }
 
 if vim.g.have_nerd_font then
   require('mini.icons').setup()

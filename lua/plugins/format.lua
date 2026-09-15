@@ -1,6 +1,12 @@
-local gh = require('config.utils').gh
+vim.pack.add { 'https://github.com/stevearc/conform.nvim' }
 
-vim.pack.add { gh 'stevearc/conform.nvim' }
+-- Only run a formatter when its config file is present somewhere above the
+-- buffer (project has opted in). No config found -> don't format by default.
+---@param patterns string[]
+local function has_config(patterns)
+  return function(_, ctx) return vim.fs.find(patterns, { path = ctx.dirname, upward = true })[1] ~= nil end
+end
+
 require('conform').setup {
   notify_on_error = false,
   format_on_save = function(bufnr)
@@ -26,6 +32,27 @@ require('conform').setup {
     html = { 'biome', 'prettier', stop_after_first = true },
     css = { 'biome', 'prettier', stop_after_first = true },
     scss = { 'biome', 'prettier', stop_after_first = true },
+  },
+  formatters = {
+    stylua = { condition = has_config { 'stylua.toml', '.stylua.toml' } },
+    ruff_format = { condition = has_config { 'pyproject.toml', 'ruff.toml', '.ruff.toml' } },
+    ruff_organize_imports = { condition = has_config { 'pyproject.toml', 'ruff.toml', '.ruff.toml' } },
+    rustfmt = { condition = has_config { 'rustfmt.toml', '.rustfmt.toml' } },
+    biome = { condition = has_config { 'biome.json', 'biome.jsonc' } },
+    prettier = {
+      condition = has_config {
+        '.prettierrc',
+        '.prettierrc.json',
+        '.prettierrc.yml',
+        '.prettierrc.yaml',
+        '.prettierrc.js',
+        '.prettierrc.cjs',
+        '.prettierrc.mjs',
+        'prettier.config.js',
+        'prettier.config.cjs',
+        'prettier.config.mjs',
+      },
+    },
   },
 }
 

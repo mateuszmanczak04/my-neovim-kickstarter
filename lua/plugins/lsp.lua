@@ -1,6 +1,4 @@
-local gh = require('config.utils').gh
-
-vim.pack.add { gh 'j-hui/fidget.nvim' }
+vim.pack.add { 'https://github.com/j-hui/fidget.nvim' }
 require('fidget').setup {}
 
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -11,11 +9,19 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
     end
 
-    map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
+    local builtin = require 'telescope.builtin'
 
-    map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
-
+    map('grd', builtin.lsp_definitions, '[G]oto [D]efinition')
     map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+    map('gri', builtin.lsp_implementations, '[G]oto [I]mplementation')
+    map('grt', builtin.lsp_type_definitions, '[G]oto [T]ype Definition')
+    map('grr', builtin.lsp_references, '[G]oto [R]eferences')
+
+    map('gO', builtin.lsp_document_symbols, 'Open Document Symbols')
+    map('gW', builtin.lsp_dynamic_workspace_symbols, 'Open Workspace Symbols')
+
+    map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
+    map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
 
     local client = vim.lsp.get_client_by_id(event.data.client_id)
     if client and client:supports_method('textDocument/documentHighlight', event.buf) then
@@ -98,10 +104,10 @@ local servers = {
 }
 
 vim.pack.add {
-  gh 'neovim/nvim-lspconfig',
-  gh 'mason-org/mason.nvim',
-  gh 'mason-org/mason-lspconfig.nvim',
-  gh 'WhoIsSethDaniel/mason-tool-installer.nvim',
+  'https://github.com/neovim/nvim-lspconfig',
+  'https://github.com/mason-org/mason.nvim',
+  'https://github.com/mason-org/mason-lspconfig.nvim',
+  'https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim',
 }
 
 require('mason').setup {}
@@ -118,6 +124,10 @@ vim.list_extend(ensure_installed, {
 require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
 for name, server in pairs(servers) do
+  -- Only attach when a project root (e.g. pyproject.toml, package.json, .git) is found nearby.
+  -- Without this, opening a random file (e.g. on the Desktop) would still spin up
+  -- the server against the file's own directory and produce diagnostics.
+  server = vim.tbl_deep_extend('force', { single_file_support = false }, server)
   vim.lsp.config(name, server)
   vim.lsp.enable(name)
 end
