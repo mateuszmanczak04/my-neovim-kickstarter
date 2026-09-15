@@ -25,6 +25,7 @@ vim.keymap.set('n', '<leader>gg', neogit.open, { desc = 'Open Neogit UI' })
 vim.keymap.set('n', 'gd', diffview.open, { desc = '[G]it [D]iffview open' })
 vim.keymap.set('n', 'gc', diffview.close, { desc = '[G]it Diffview [C]lose' })
 vim.keymap.set('n', 'gh', diffview.file_history, { desc = '[G]it file [H]istory' })
+vim.keymap.set('n', 'gR', '<Cmd>DiffviewRefresh<CR>', { desc = '[G]it Diffview [R]efresh' })
 
 gitsigns.setup {
   signs = {
