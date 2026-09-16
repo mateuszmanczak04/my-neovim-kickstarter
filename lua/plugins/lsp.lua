@@ -105,23 +105,7 @@ local servers = {
 
 vim.pack.add {
   'https://github.com/neovim/nvim-lspconfig',
-  'https://github.com/mason-org/mason.nvim',
-  'https://github.com/mason-org/mason-lspconfig.nvim',
-  'https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim',
 }
-
-require('mason').setup {}
-
-require('mason-lspconfig').setup {
-  automatic_enable = false, -- Change this to true if you want to automatically enable servers that are installed manually (e.g. via :Mason / :MasonInstall)
-}
-
-local ensure_installed = vim.tbl_keys(servers or {})
-vim.list_extend(ensure_installed, {
-  'stylua',
-})
-
-require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
 for name, server in pairs(servers) do
   -- Only attach when a project root (e.g. pyproject.toml, package.json, .git) is found nearby.
