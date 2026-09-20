@@ -30,3 +30,11 @@ vim.lsp.config('lua_ls', {
 })
 
 vim.lsp.enable('lua_ls')
+
+local has_config = require('util.conform').has_config
+require('conform').setup {
+  formatters_by_ft = { lua = { 'stylua' } },
+  formatters = {
+    stylua = { condition = has_config { 'stylua.toml', '.stylua.toml' } },
+  },
+}
