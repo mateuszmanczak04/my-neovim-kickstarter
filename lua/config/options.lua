@@ -27,3 +27,8 @@ vim.o.inccommand = 'split'
 vim.o.cursorline = true
 vim.o.scrolloff = 10
 vim.o.confirm = true
+
+-- Auto-source a project-local .nvim.lua/.nvimrc/.exrc (e.g. for per-project LSP setup).
+-- `secure` disables autocmd/shell/write from those files until the directory is `:trust`ed.
+vim.o.exrc = true
+vim.o.secure = true

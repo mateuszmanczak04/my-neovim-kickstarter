@@ -4,8 +4,7 @@ require('luasnip').setup {}
 vim.pack.add { { src = 'https://github.com/saghen/blink.cmp', version = vim.version.range '1.*' } }
 require('blink.cmp').setup {
   keymap = {
-    -- 'enter' binds <CR> to accept (the 'default' preset leaves <CR> unbound).
-    preset = 'enter',
+    preset = 'default',
   },
 
   appearance = {
@@ -20,11 +19,11 @@ require('blink.cmp').setup {
   },
 
   sources = {
-    default = { 'lsp', 'path', 'snippets' },
+    default = { 'lsp', 'path', 'snippets', 'buffer' },
   },
 
   snippets = { preset = 'luasnip' },
-  fuzzy = { implementation = 'lua' },
+  fuzzy = { implementation = 'prefer_rust_with_warning' },
 
   -- Shows a signature help window while you type arguments for a function
   signature = { enabled = true },

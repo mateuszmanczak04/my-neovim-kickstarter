@@ -53,65 +53,11 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
----@type table<string, vim.lsp.Config>
-local servers = {
-  pyright = {},
-  ruff = {},
-  ['ts_ls'] = {},
-  biome = {},
-  tailwindcss = {},
-  astro = {},
-  rust_analyzer = {},
-  clangd = {},
-  ['dockerfile-language-server'] = {},
-  ['docker-language-server'] = {},
-  ['docker-compose-language-service'] = {},
-  ['dotenv-linter'] = {},
-  ['html-lsp'] = {},
-  ['elixir-ls'] = {},
-  ['jinja-lsp'] = {},
-  ['python-lsp-server'] = {},
-  eslint = {},
-
-  lua_ls = {
-    on_init = function(client)
-      client.server_capabilities.documentFormattingProvider = false
-
-      if client.workspace_folders then
-        local path = client.workspace_folders[1].name
-        if path ~= vim.fn.stdpath 'config' and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc')) then return end
-      end
-
-      local current_settings = client.config.settings --[[@as lspconfig.settings.lua_ls]]
-      client.config.settings.Lua = vim.tbl_deep_extend('force', current_settings.Lua, {
-        runtime = {
-          version = 'LuaJIT',
-          path = { 'lua/?.lua', 'lua/?/init.lua' },
-        },
-        workspace = {
-          checkThirdParty = false,
-          library = vim.api.nvim_get_runtime_file('', true),
-        },
-      })
-    end,
-    ---@type lspconfig.settings.lua_ls
-    settings = {
-      Lua = {
-        format = { enable = false }, -- Disable formatting (formatting is done by stylua)
-      },
-    },
-  },
-}
-
-vim.pack.add {
-  'https://github.com/neovim/nvim-lspconfig',
-}
-
-for name, server in pairs(servers) do
-  -- Only attach when a project root (e.g. pyproject.toml, package.json, .git) is found nearby.
-  -- Without this, opening a random file (e.g. on the Desktop) would still spin up
-  -- the server against the file's own directory and produce diagnostics.
-  server = vim.tbl_deep_extend('force', { single_file_support = false }, server)
-  vim.lsp.config(name, server)
-  vim.lsp.enable(name)
-end
+-- No servers are configured/enabled globally (mason and nvim-lspconfig were both removed
+-- deliberately). Each project brings its own LSP setup via a project-local .nvim.lua
+-- (see `exrc`/`secure` in config/options.lua) that calls vim.lsp.config()/vim.lsp.enable()
+-- with that project's own cmd/root_markers/settings. Files opened outside such a project
+-- simply get no LSP.
+vim.lsp.config('*', {
+  capabilities = require('blink.cmp').get_lsp_capabilities(),
+})
