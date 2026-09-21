@@ -9,6 +9,32 @@ if vim.fn.executable 'make' == 1 then table.insert(telescope_plugins, 'https://g
 vim.pack.add(telescope_plugins)
 
 require('telescope').setup {
+  defaults = {
+    vimgrep_arguments = {
+      'rg',
+      '--color=never',
+      '--no-heading',
+      '--with-filename',
+      '--line-number',
+      '--column',
+      '--smart-case',
+      '--hidden',
+      '--glob=!.git/*',
+    },
+  },
+  pickers = {
+    find_files = {
+      hidden = true,
+      find_command = {
+        'fd',
+        '--type',
+        'f',
+        '--hidden', -- show dotfiles too
+        '--exclude',
+        '.git',
+      },
+    },
+  },
   extensions = {
     ['ui-select'] = { require('telescope.themes').get_dropdown() },
   },

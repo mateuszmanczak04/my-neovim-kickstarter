@@ -18,5 +18,10 @@ require('neo-tree').setup {
         ['<leader>e'] = 'close_window',
       },
     },
+    filtered_items = {
+      hide_dotfiles = false, -- show all dotfiles...
+      hide_gitignored = true, -- ...except what .gitignore excludes
+      hide_by_name = { '.git' }, -- .git itself isn't normally gitignored, so hide it explicitly
+    },
   },
 }
